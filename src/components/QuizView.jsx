@@ -223,10 +223,10 @@ export default function QuizView({ onReturnToStart, initialFinished = false }) {
                         transition={{ type: "spring", delay: 0.8 }}
                     >
                         <img
-                            src="/imgs/cat-dino.png"
-                            alt="Gato dinosaurio celebrando"
-                            className="w-48 h-48 sm:w-64 sm:h-64 md:w-[350px] md:h-[350px] object-contain drop-shadow-2xl cursor-pointer hover:scale-105 transition-transform"
-                            onError={(e) => { e.target.src = 'https://placehold.co/350x350/fff/42b883?text=Cat+Dino'; }}
+                            src="/cat-lap.svg"
+                            alt="Gato con laptop"
+                            className="w-full max-w-[200px] sm:max-w-xs md:max-w-sm h-auto object-contain drop-shadow-2xl cursor-pointer hover:scale-105 transition-transform"
+                            onError={(e) => { e.target.src = 'https://placehold.co/350x350/fff/42b883?text=Cat+Lap'; }}
                             onClick={handleSecretTap}
                             onTouchEnd={handleSecretTap}
                         />

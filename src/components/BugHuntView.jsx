@@ -425,7 +425,7 @@ export default function BugHuntView({ onReturnToStart }) {
                         /* ── Invisible hitbox div — browser-native hit detection ── */
                         <motion.div
                           key={bug.id}
-                          className="absolute flex items-center justify-center w-20 h-20 pointer-events-auto cursor-crosshair"
+                          className="absolute flex items-center justify-center w-[15%] aspect-square min-w-[60px] max-w-[100px] pointer-events-auto cursor-crosshair"
                           style={{
                             left: `${bug.x}%`,
                             top: `${bug.y}%`,
@@ -577,7 +577,7 @@ export default function BugHuntView({ onReturnToStart }) {
                     onClick={onReturnToStart}
                     className="text-white/40 font-geomanist text-xs hover:text-white/70 transition-colors underline underline-offset-2"
                   >
-                    Volver al inicio
+                    Volver al Arcade
                   </button>
                 </motion.div>
               )}
@@ -663,7 +663,7 @@ export default function BugHuntView({ onReturnToStart }) {
                     onClick={onReturnToStart}
                     className="text-white/40 font-geomanist text-xs hover:text-white/70 transition-colors underline underline-offset-2"
                   >
-                    Volver al inicio
+                    Volver al Arcade
                   </button>
                 </motion.div>
               )}

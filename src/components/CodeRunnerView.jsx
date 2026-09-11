@@ -2,15 +2,15 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-const GRAVITY = 0.00055;
-const JUMP_STRENGTH = 0.20;
-const GROUND_Y = 20; // Player's bottom % at ground
+const GRAVITY = 0.0006;
+const JUMP_STRENGTH = 0.22;
+const GROUND_Y = 15; // Player's bottom % at ground
 const BASE_SPEED = 0.045;
-const PLAYER_X = 10; // Fixed horizontal position %
-const PLAYER_WIDTH = 12; // Approx % width
-const PLAYER_HEIGHT = 20; // Approx % height
-const CACTUS_WIDTH = 6;
-const CACTUS_HEIGHT = 16;
+const PLAYER_X = 10; 
+const PLAYER_WIDTH = 10; // Reduced width
+const PLAYER_HEIGHT = 16; // Reduced height
+const CACTUS_WIDTH = 7; // Increased size relative to player
+const CACTUS_HEIGHT = 20;
 
 function randomBetween(a, b) {
   return a + Math.random() * (b - a);
@@ -36,6 +36,10 @@ export default function CodeRunnerView({ onReturnToStart }) {
   const isJumpingRef = useRef(false);
   const obstaclesRef = useRef([]);
   const spawnTimerRef = useRef(0);
+  
+  // Animation refs
+  const groundRef = useRef(null);
+  const bgOffsetXRef = useRef(0);
 
   // Load Hi-Score on mount
   useEffect(() => {
@@ -75,8 +79,20 @@ export default function CodeRunnerView({ onReturnToStart }) {
     // 1. Score & Speed Scaling
     scoreRef.current += dt * 0.015;
     setScore(Math.floor(scoreRef.current));
-    const speedMultiplier = 1 + (scoreRef.current * 0.001);
+    const speedMultiplier = 1 + (scoreRef.current * 0.0012);
     const currentSpeed = BASE_SPEED * speedMultiplier;
+
+    // Background Animation sync (Seamless Ground)
+    // currentSpeed is % of screen per ms.
+    // Since our ground is w-[200%], translating it by 50% of its own width moves it 1 full screen.
+    // If cactus moves X% of screen, ground should move (X / 2)% of its own width.
+    bgOffsetXRef.current -= (currentSpeed * dt) / 2;
+    if (bgOffsetXRef.current <= -50) {
+      bgOffsetXRef.current += 50; // Loop seamlessly
+    }
+    if (groundRef.current) {
+      groundRef.current.style.transform = `translateX(${bgOffsetXRef.current}%)`;
+    }
 
     // 2. Player Physics
     if (isJumpingRef.current || playerYRef.current > GROUND_Y) {
@@ -91,10 +107,11 @@ export default function CodeRunnerView({ onReturnToStart }) {
       setPlayerY(playerYRef.current);
     }
 
-    // 3. Obstacle Spawning
+    // 3. Obstacle Spawning (Dynamic ranges)
     spawnTimerRef.current += dt;
-    // Faster spawn interval as speed increases
-    const spawnInterval = randomBetween(1200, 2500) / speedMultiplier;
+    const minWait = Math.max(600, 1600 - (scoreRef.current * 0.6));
+    const maxWait = Math.max(1000, 2800 - (scoreRef.current * 1.0));
+    const spawnInterval = randomBetween(minWait, maxWait);
     
     if (spawnTimerRef.current >= spawnInterval) {
       spawnTimerRef.current = 0;
@@ -107,10 +124,7 @@ export default function CodeRunnerView({ onReturnToStart }) {
     // 4. Update Obstacles & Collision
     let isHit = false;
     
-    // Player Hitbox (AABB)
-    // Left: PLAYER_X, Right: PLAYER_X + PLAYER_WIDTH
-    // Bottom: playerY, Top: playerY + PLAYER_HEIGHT
-    // We add slight leniency (padding) to hitbox so it's not frustrating
+    // Player Hitbox (AABB with relative %)
     const pLeft = PLAYER_X + 2;
     const pRight = PLAYER_X + PLAYER_WIDTH - 2;
     const pBottom = playerYRef.current + 1;
@@ -119,11 +133,10 @@ export default function CodeRunnerView({ onReturnToStart }) {
     obstaclesRef.current = obstaclesRef.current.map(obs => {
       const newX = obs.x - (currentSpeed * dt);
       
-      // Obstacle Hitbox
-      const cLeft = newX + 1;
-      const cRight = newX + CACTUS_WIDTH - 1;
+      const cLeft = newX + 1.5;
+      const cRight = newX + CACTUS_WIDTH - 1.5;
       const cBottom = GROUND_Y;
-      const cTop = GROUND_Y + CACTUS_HEIGHT - 1;
+      const cTop = GROUND_Y + CACTUS_HEIGHT - 2;
 
       // Check overlap
       if (pRight > cLeft && pLeft < cRight && pTop > cBottom && pBottom < cTop) {
@@ -178,7 +191,6 @@ export default function CodeRunnerView({ onReturnToStart }) {
   };
 
   const handlePointerDown = (e) => {
-    // Only jump if we are playing and tapping inside the game area (avoid double triggers)
     if (phase === 'playing') {
       e.preventDefault();
       jump();
@@ -193,21 +205,76 @@ export default function CodeRunnerView({ onReturnToStart }) {
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.5 }}
     >
+      <style>{`
+        @keyframes cloudPan {
+          from { transform: translateX(0); }
+          to { transform: translateX(-150vw); }
+        }
+        .animate-cloud-slow { animation: cloudPan 45s linear infinite; will-change: transform; }
+        .animate-cloud-med { animation: cloudPan 30s linear infinite; will-change: transform; }
+        .animate-cloud-fast { animation: cloudPan 20s linear infinite; will-change: transform; }
+      `}</style>
+
       {/* ── Responsive Game Container ─────────────────────────────────────────── */}
       <div className="relative w-full max-w-6xl aspect-[4/5] sm:aspect-video max-h-[92vh]">
         <div 
-          className="absolute inset-0 w-full h-full overflow-hidden rounded-3xl bg-gray-900 shadow-[0_0_80px_rgba(0,0,0,0.25)] border-4 border-azul-gatuno touch-none"
+          className="absolute inset-0 w-full h-full overflow-hidden rounded-3xl bg-gradient-to-b from-[#090a15] to-[#121330] shadow-[0_0_80px_rgba(0,0,0,0.25)] border-4 border-azul-gatuno touch-none"
           onPointerDown={handlePointerDown}
+          onTouchStart={handlePointerDown}
         >
-          {/* Background ground line */}
+          
+          {/* Animated Parallax Clouds */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+             {/* Cloud 1 (Farthest, slowest) */}
+             <div className="absolute top-[15%] left-0 w-full h-full opacity-15 scale-75">
+               <div className="absolute left-[100%] animate-cloud-slow">
+                  <div className="relative w-32 h-10">
+                     <div className="absolute bottom-0 w-full h-6 bg-white rounded-full" />
+                     <div className="absolute bottom-2 left-4 w-10 h-10 bg-white rounded-full" />
+                     <div className="absolute bottom-2 right-6 w-14 h-14 bg-white rounded-full" />
+                  </div>
+               </div>
+             </div>
+             {/* Cloud 2 (Middle, medium) */}
+             <div className="absolute top-[35%] left-0 w-full h-full opacity-20 scale-90">
+               <div className="absolute left-[100%] animate-cloud-med" style={{ animationDelay: '-12s' }}>
+                  <div className="relative w-40 h-12">
+                     <div className="absolute bottom-0 w-full h-8 bg-white rounded-full" />
+                     <div className="absolute bottom-2 left-6 w-12 h-12 bg-white rounded-full" />
+                     <div className="absolute bottom-2 right-8 w-16 h-16 bg-white rounded-full" />
+                  </div>
+               </div>
+             </div>
+             {/* Cloud 3 (Closest, fastest) */}
+             <div className="absolute top-[10%] left-0 w-full h-full opacity-30 scale-110">
+               <div className="absolute left-[100%] animate-cloud-fast" style={{ animationDelay: '-6s' }}>
+                  <div className="relative w-28 h-8">
+                     <div className="absolute bottom-0 w-full h-5 bg-white rounded-full" />
+                     <div className="absolute bottom-1 left-3 w-8 h-8 bg-white rounded-full" />
+                     <div className="absolute bottom-1 right-5 w-10 h-10 bg-white rounded-full" />
+                  </div>
+               </div>
+             </div>
+          </div>
+
+          {/* Background ground line & speed lines (Seamless loop) */}
           <div 
-            className="absolute left-0 right-0 bg-azul-gatuno"
+            className="absolute left-0 right-0 border-t-2 border-azul-gatuno flex overflow-hidden"
             style={{ bottom: 0, height: `${GROUND_Y}%` }}
-          />
-          <div 
-            className="absolute left-0 right-0 h-1.5 bg-verde-limon/30"
-            style={{ bottom: `${GROUND_Y}%` }}
-          />
+          >
+            <div ref={groundRef} className="absolute left-0 top-0 w-[200%] h-full flex pt-1.5 will-change-transform">
+               {/* Pattern Block 1 */}
+               <div className="w-1/2 h-full flex flex-col gap-1.5">
+                   <div className="w-full h-1.5 opacity-80" style={{ backgroundImage: 'repeating-linear-gradient(90deg, #4142F5 0%, #4142F5 2%, transparent 2%, transparent 8%)' }} />
+                   <div className="w-full h-1.5 opacity-40" style={{ backgroundImage: 'repeating-linear-gradient(90deg, #4142F5 0%, #4142F5 4%, transparent 4%, transparent 15%)' }} />
+               </div>
+               {/* Pattern Block 2 (Clone for seamless loop) */}
+               <div className="w-1/2 h-full flex flex-col gap-1.5">
+                   <div className="w-full h-1.5 opacity-80" style={{ backgroundImage: 'repeating-linear-gradient(90deg, #4142F5 0%, #4142F5 2%, transparent 2%, transparent 8%)' }} />
+                   <div className="w-full h-1.5 opacity-40" style={{ backgroundImage: 'repeating-linear-gradient(90deg, #4142F5 0%, #4142F5 4%, transparent 4%, transparent 15%)' }} />
+               </div>
+            </div>
+          </div>
 
           {/* ═══════════════════════════════════════
               MENU PHASE
@@ -255,7 +322,7 @@ export default function CodeRunnerView({ onReturnToStart }) {
                     onClick={onReturnToStart}
                     className="text-white/40 font-geomanist text-sm hover:text-white transition-colors underline underline-offset-2"
                   >
-                    Volver al Arcade Hub
+                    Volver al Arcade
                   </button>
                 </div>
               </motion.div>
@@ -374,7 +441,7 @@ export default function CodeRunnerView({ onReturnToStart }) {
                     onClick={onReturnToStart}
                     className="text-white/60 font-geomanist text-sm hover:text-white transition-colors underline underline-offset-2"
                   >
-                    Volver al Arcade Hub
+                    Volver al Arcade
                   </button>
                 </div>
               </motion.div>

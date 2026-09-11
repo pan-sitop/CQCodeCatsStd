@@ -17,16 +17,16 @@ function randomBetween(a, b) {
 // ─── CSS Components for Items ─────────────────────────────────────────────────
 function CommitItem({ fading }) {
   return (
-    <div className={`relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-green-400 bg-green-900/80 shadow-[0_0_15px_rgba(74,222,128,0.6)] ${fading ? 'opacity-0 scale-150 transition-all duration-300' : ''}`}>
-      <span className="font-ryker font-black text-green-300 text-xs sm:text-sm tracking-wider">PR</span>
+    <div className={`relative flex items-center justify-center w-[12%] min-w-[35px] max-w-[60px] aspect-square rounded-full border-2 border-green-400 bg-green-900/80 shadow-[0_0_15px_rgba(74,222,128,0.6)] ${fading ? 'opacity-0 scale-150 transition-all duration-300' : ''}`}>
+      <span className="font-geomanist text-[10px] sm:text-xs font-bold text-white tracking-widest uppercase">PR</span>
     </div>
   );
 }
 
 function BugItem({ fading }) {
   return (
-    <div className={`relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded bg-red-600/90 border border-red-400 shadow-[0_0_15px_rgba(239,68,68,0.7)] ${fading ? 'opacity-0 scale-50 transition-all duration-300' : ''}`}>
-      <span className="font-geomanist font-bold text-white text-[10px] sm:text-xs tracking-tighter">404</span>
+    <div className={`relative flex items-center justify-center w-[12%] min-w-[35px] max-w-[60px] aspect-square rounded bg-red-600/90 border border-red-400 shadow-[0_0_15px_rgba(239,68,68,0.7)] ${fading ? 'opacity-0 scale-50 transition-all duration-300' : ''}`}>
+      <span className="font-geomanist text-[10px] sm:text-xs font-bold text-white tracking-widest uppercase">404</span>
     </div>
   );
 }
@@ -307,7 +307,7 @@ export default function CatchCommitsView({ onReturnToStart }) {
                     onClick={onReturnToStart}
                     className="text-white/40 font-geomanist text-sm hover:text-white transition-colors underline underline-offset-2"
                   >
-                    Volver al Arcade Hub
+                    Volver al Arcade
                   </button>
                 </div>
               </motion.div>
@@ -377,7 +377,7 @@ export default function CatchCommitsView({ onReturnToStart }) {
                 <motion.img
                   src="/cat-catcher-box.svg"
                   alt="Catcher Box"
-                  className="w-24 h-24 sm:w-32 sm:h-32 object-contain"
+                  className="w-[16%] min-w-[70px] max-w-[140px] aspect-square object-contain"
                   style={{ filter: 'drop-shadow(0 0 10px rgba(65,66,245,0.8))' }}
                   onError={(e) => {
                     // Fallback to a simple CSS box if SVG is missing
@@ -436,7 +436,7 @@ export default function CatchCommitsView({ onReturnToStart }) {
                     onClick={onReturnToStart}
                     className="text-white/60 font-geomanist text-sm hover:text-white transition-colors underline underline-offset-2"
                   >
-                    Volver al Arcade Hub
+                    Volver al Arcade
                   </button>
                 </div>
               </motion.div>
