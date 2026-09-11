@@ -153,7 +153,7 @@ export default function QuizView({ onReturnToStart, initialFinished = false }) {
                 origin: { y: 0.6 },
                 colors: ['#4142F5', '#C3FB34'] // Logo colors
             });
-            alert("¡RAWR! Has encontrado al Michi-Dinosaurio 🦖🐈");
+            alert("¡Miau! Has encontrado el secreto de los michi-programadores 🐱💻");
         }
     };
 

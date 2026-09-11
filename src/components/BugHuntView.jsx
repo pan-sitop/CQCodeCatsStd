@@ -308,7 +308,7 @@ export default function BugHuntView({ onReturnToStart }) {
                     onClick={onReturnToStart}
                     className="text-white/40 font-geomanist text-xs hover:text-white/70 transition-colors underline underline-offset-2"
                   >
-                    Volver al inicio
+                    Volver al Arcade
                   </button>
                 </motion.div>
               )}
