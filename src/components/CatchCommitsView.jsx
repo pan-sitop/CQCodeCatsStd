@@ -130,16 +130,16 @@ export default function CatchCommitsView({ onReturnToStart }) {
     playerXRef.current = currentX;
     setPlayerX(currentX);
 
-    // 2. Difficulty Scaling
-    const level = Math.floor(scoreRef.current / 300) + 1;
-    const baseFallSpeed = 0.02 + (level * 0.005);
-    const spawnInterval = Math.max(400, 1500 - (level * 150)); // ms between spawns
+    // 2. Difficulty Scaling (Score based, no levels)
+    const currentScore = scoreRef.current;
+    const baseFallSpeed = 0.025 + (currentScore * 0.000015);
+    const spawnInterval = Math.max(350, 1200 - (currentScore * 0.4)); // ms between spawns
 
     // 3. Spawn Items
     timeSinceLastSpawnRef.current += dt;
     if (timeSinceLastSpawnRef.current >= spawnInterval) {
       timeSinceLastSpawnRef.current = 0;
-      const isBug = Math.random() < 0.3; // 30% chance of bug
+      const isBug = Math.random() < 0.5; // 50% chance of bug
       const newItem = {
         id: Date.now() + Math.random(),
         type: isBug ? ITEM_TYPES.BUG : ITEM_TYPES.COMMIT,
@@ -229,7 +229,7 @@ export default function CatchCommitsView({ onReturnToStart }) {
   // ─────────────────────────────────────────────────────────────────────────
   return (
     <motion.div
-      className="w-full flex-grow min-h-screen flex flex-col items-center justify-center p-3 md:p-4 pointer-events-auto overflow-hidden bg-white/20 backdrop-blur-sm"
+      className="w-full flex-grow min-h-screen flex flex-col items-center justify-center p-3 md:p-4 pointer-events-auto overflow-hidden bg-slate-950/70 backdrop-blur-sm"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
@@ -330,12 +330,7 @@ export default function CatchCommitsView({ onReturnToStart }) {
                   </span>
                 </div>
 
-                {/* Level Box (Derived from Score in Catch Commits) */}
-                <div className="bg-azul-gatuno/80 border border-verde-limon/50 backdrop-blur-sm rounded-full px-4 py-1.5 sm:px-5 sm:py-2 shadow-[0_0_10px_rgba(195,251,52,0.2)]">
-                  <span className="font-geomanist text-xs sm:text-sm font-bold tracking-widest uppercase text-yellow-300">
-                    LVL {Math.floor(score / 300) + 1}
-                  </span>
-                </div>
+
 
                 {/* Lives Box */}
                 <div className="bg-azul-gatuno/80 border border-verde-limon/50 backdrop-blur-sm rounded-full px-4 py-2 sm:py-2.5 flex items-center shadow-[0_0_10px_rgba(195,251,52,0.2)]">

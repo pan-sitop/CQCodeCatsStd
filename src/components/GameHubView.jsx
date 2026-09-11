@@ -28,22 +28,19 @@ const GAMES = [
 export default function GameHubView({ onSelectGame, onReturnToStart }) {
   return (
     <motion.div
-      className="w-full flex-grow min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 pointer-events-auto overflow-hidden bg-white/50 backdrop-blur-sm"
+      className="w-full flex-grow min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 pointer-events-auto overflow-hidden bg-slate-950/70 backdrop-blur-sm"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 1.05 }}
       transition={{ duration: 0.4 }}
     >
-      <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border-4 border-azul-gatuno">
+      <div className="w-full max-w-5xl bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-6 sm:p-10 border-4 border-azul-gatuno">
         
         <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
           <div>
             <h1 className="font-ryker font-black text-4xl sm:text-5xl text-azul-gatuno uppercase tracking-tight">
-              Arcade Hub
+              ARCADE
             </h1>
-            <p className="font-geomanist text-gray-500 text-lg mt-1">
-              Selecciona un minijuego para continuar
-            </p>
           </div>
           <button
             onClick={onReturnToStart}
