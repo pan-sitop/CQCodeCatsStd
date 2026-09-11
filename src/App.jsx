@@ -5,9 +5,11 @@ import IdleView from './components/IdleView';
 import PresentationView from './components/PresentationView';
 import QuizView from './components/QuizView';
 import BugHuntView from './components/BugHuntView';
+import GameHubView from './components/GameHubView';
+import CatchCommitsView from './components/CatchCommitsView';
 
 function App() {
-  const [viewState, setViewState] = useState('idle'); // idle | presentation | quiz | bughunt
+  const [viewState, setViewState] = useState('idle'); // idle | presentation | quiz | bughunt | gamehub | catchcommits | redes
 
   return (
     <div className="relative w-screen h-screen bg-white overflow-hidden text-azul-gatuno font-camingo">
@@ -19,12 +21,12 @@ function App() {
             <IdleView
               key="idle"
               onProceed={() => setViewState('presentation')}
-              onGoToGame={() => setViewState('bughunt')}
+              onGoToGame={() => setViewState('gamehub')}
               onGoToRedes={() => setViewState('redes')}
             />
           )}
           {viewState === 'presentation' && (
-            <PresentationView key="presentation" onFinish={() => setViewState('bughunt')} />
+            <PresentationView key="presentation" onFinish={() => setViewState('gamehub')} />
           )}
           {viewState === 'quiz' && (
             <QuizView key="quiz" onReturnToStart={() => setViewState('idle')} />
@@ -32,8 +34,18 @@ function App() {
           {viewState === 'redes' && (
             <QuizView key="redes" initialFinished={true} onReturnToStart={() => setViewState('idle')} />
           )}
+          {viewState === 'gamehub' && (
+            <GameHubView 
+              key="gamehub" 
+              onSelectGame={(gameId) => setViewState(gameId)}
+              onReturnToStart={() => setViewState('idle')} 
+            />
+          )}
           {viewState === 'bughunt' && (
-            <BugHuntView key="bughunt" onReturnToStart={() => setViewState('idle')} />
+            <BugHuntView key="bughunt" onReturnToStart={() => setViewState('gamehub')} />
+          )}
+          {viewState === 'catchcommits' && (
+            <CatchCommitsView key="catchcommits" onReturnToStart={() => setViewState('gamehub')} />
           )}
         </AnimatePresence>
       </div>

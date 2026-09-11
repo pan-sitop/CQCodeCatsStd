@@ -106,7 +106,7 @@ export default function IdleView({ onProceed, onGoToGame, onGoToRedes }) {
                             onClick={onGoToGame}
                             className="w-full sm:w-auto px-6 py-4 rounded-full font-geomanist font-bold text-lg uppercase tracking-widest bg-white text-azul-gatuno ring-4 ring-inset ring-azul-gatuno shadow-md hover:bg-azul-gatuno hover:text-white transition-all duration-300 flex items-center justify-center whitespace-nowrap"
                         >
-                            Bug Hunt
+                            Juegos
                         </button>
                         <button
                             onClick={onGoToRedes}
