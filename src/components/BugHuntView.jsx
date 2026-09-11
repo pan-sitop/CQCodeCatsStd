@@ -251,24 +251,8 @@ export default function BugHuntView({ onReturnToStart }) {
     >
       {/* ── Responsive Game Container ─────────────────────────────────────────── */}
       <div className="relative w-full max-w-6xl aspect-[4/5] sm:aspect-video max-h-[92vh]">
-        <div className="absolute inset-0 w-full h-full overflow-hidden rounded-3xl bg-azul-gatuno shadow-[0_0_80px_rgba(65,66,245,0.45)] border-4 border-verde-limon">
+        <div className="absolute inset-0 w-full h-full overflow-hidden rounded-3xl bg-gray-900 shadow-[0_0_80px_rgba(0,0,0,0.25)] border-4 border-azul-gatuno">
           <div className="absolute inset-0 flex flex-col">
-
-            {/* Starfield */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              {Array.from({ length: 35 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute rounded-full bg-white/10"
-                  style={{
-                    width: `${randomBetween(2, 5)}px`,
-                    height: `${randomBetween(2, 5)}px`,
-                    left: `${randomBetween(0, 100)}%`,
-                    top: `${randomBetween(0, 100)}%`,
-                  }}
-                />
-              ))}
-            </div>
 
             {/* ═══════════════════════════════════════
                 MENU
@@ -412,18 +396,26 @@ export default function BugHuntView({ onReturnToStart }) {
                   onTouchStart={handleMiss}
                 >
                   {/* HUD */}
-                  <div className="absolute top-2 sm:top-3 left-3 sm:left-4 right-3 sm:right-4 flex items-center justify-between z-20 pointer-events-none">
-                    {/* Score */}
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-geomanist font-bold text-verde-limon text-base sm:text-xl md:text-2xl tabular-nums">
+                  <div className="absolute top-3 left-3 right-3 sm:top-4 sm:left-4 sm:right-4 flex items-center justify-between z-20 pointer-events-none">
+                    
+                    {/* Score Box */}
+                    <div className="bg-azul-gatuno/80 border border-verde-limon/50 backdrop-blur-sm rounded-full px-4 py-1.5 sm:px-5 sm:py-2 flex items-center gap-2 shadow-[0_0_10px_rgba(195,251,52,0.2)]">
+                      <span className="font-geomanist text-white/70 text-[10px] sm:text-xs uppercase tracking-widest mt-0.5">Score</span>
+                      <span className="font-geomanist font-bold text-verde-limon text-sm sm:text-lg tabular-nums leading-none">
                         {score}
                       </span>
-                      <span className="font-geomanist text-white/45 text-xs">pts</span>
                     </div>
-                    {/* Bullets */}
-                    <BulletHUD bulletsLeft={bullets} total={MAX_BULLETS} />
-                    {/* Level */}
-                    <LevelBadge level={level} />
+
+                    {/* Level Box */}
+                    <div className="bg-azul-gatuno/80 border border-verde-limon/50 backdrop-blur-sm rounded-full px-4 py-1.5 sm:px-5 sm:py-2 shadow-[0_0_10px_rgba(195,251,52,0.2)]">
+                      <LevelBadge level={level} />
+                    </div>
+
+                    {/* Bullets Box */}
+                    <div className="bg-azul-gatuno/80 border border-verde-limon/50 backdrop-blur-sm rounded-full px-4 py-2 shadow-[0_0_10px_rgba(195,251,52,0.2)]">
+                      <BulletHUD bulletsLeft={bullets} total={MAX_BULLETS} />
+                    </div>
+
                   </div>
 
                   {/* Alive & dead bugs */}
