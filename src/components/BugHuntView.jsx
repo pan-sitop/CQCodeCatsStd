@@ -243,7 +243,7 @@ export default function BugHuntView({ onReturnToStart }) {
   // ─────────────────────────────────────────────────────────────────────────
   return (
     <motion.div
-      className="w-full flex-grow min-h-screen flex flex-col items-center justify-center p-3 md:p-4 pointer-events-auto overflow-hidden bg-slate-950/70 backdrop-blur-sm"
+      className="w-full flex-grow min-h-screen flex flex-col items-center justify-center p-3 md:p-4 pointer-events-auto overflow-hidden"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}

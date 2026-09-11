@@ -28,7 +28,7 @@ const GAMES = [
 export default function GameHubView({ onSelectGame, onReturnToStart }) {
   return (
     <motion.div
-      className="w-full flex-grow min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 pointer-events-auto overflow-hidden bg-slate-950/70 backdrop-blur-sm"
+      className="w-full flex-grow min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 pointer-events-auto overflow-hidden"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 1.05 }}
