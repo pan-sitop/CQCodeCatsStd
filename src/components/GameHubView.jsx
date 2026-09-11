@@ -20,8 +20,8 @@ const GAMES = [
     id: 'coderunner',
     title: 'Code Runner',
     description: 'Esquiva obstáculos y compila tu código mientras corres por el servidor.',
-    color: 'bg-gray-200 text-gray-400 border-gray-300',
-    available: false,
+    color: 'bg-white text-azul-gatuno border-azul-gatuno',
+    available: true,
   }
 ];
 

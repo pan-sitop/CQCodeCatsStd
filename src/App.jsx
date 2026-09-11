@@ -7,9 +7,10 @@ import QuizView from './components/QuizView';
 import BugHuntView from './components/BugHuntView';
 import GameHubView from './components/GameHubView';
 import CatchCommitsView from './components/CatchCommitsView';
+import CodeRunnerView from './components/CodeRunnerView';
 
 function App() {
-  const [viewState, setViewState] = useState('idle'); // idle | presentation | quiz | bughunt | gamehub | catchcommits | redes
+  const [viewState, setViewState] = useState('idle'); // idle | presentation | quiz | bughunt | gamehub | catchcommits | coderunner | redes
 
   return (
     <div className="relative w-screen h-screen bg-white overflow-hidden text-azul-gatuno font-camingo">
@@ -46,6 +47,9 @@ function App() {
           )}
           {viewState === 'catchcommits' && (
             <CatchCommitsView key="catchcommits" onReturnToStart={() => setViewState('gamehub')} />
+          )}
+          {viewState === 'coderunner' && (
+            <CodeRunnerView key="coderunner" onReturnToStart={() => setViewState('gamehub')} />
           )}
         </AnimatePresence>
       </div>
