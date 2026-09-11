@@ -4,9 +4,10 @@ import FloatingBackground from './components/FloatingBackground';
 import IdleView from './components/IdleView';
 import PresentationView from './components/PresentationView';
 import QuizView from './components/QuizView';
+import BugHuntView from './components/BugHuntView';
 
 function App() {
-  const [viewState, setViewState] = useState('idle'); // idle | presentation | quiz
+  const [viewState, setViewState] = useState('idle'); // idle | presentation | quiz | bughunt
 
   return (
     <div className="relative w-screen h-screen bg-white overflow-hidden text-azul-gatuno font-camingo">
@@ -18,7 +19,7 @@ function App() {
             <IdleView
               key="idle"
               onProceed={() => setViewState('presentation')}
-              onGoToQuiz={() => setViewState('quiz')}
+              onGoToGame={() => setViewState('bughunt')}
               onGoToRedes={() => setViewState('redes')}
             />
           )}
@@ -30,6 +31,9 @@ function App() {
           )}
           {viewState === 'redes' && (
             <QuizView key="redes" initialFinished={true} onReturnToStart={() => setViewState('idle')} />
+          )}
+          {viewState === 'bughunt' && (
+            <BugHuntView key="bughunt" onReturnToStart={() => setViewState('idle')} />
           )}
         </AnimatePresence>
       </div>

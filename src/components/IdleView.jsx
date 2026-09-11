@@ -8,7 +8,7 @@ const CAROUSEL_ITEMS = [
     { title: "Objetivos", text: "Aprender, Construir, Compartir" }
 ];
 
-export default function IdleView({ onProceed, onGoToQuiz, onGoToRedes }) {
+export default function IdleView({ onProceed, onGoToGame, onGoToRedes }) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const tapCountRef = useRef(0);
     const tapTimerRef = useRef(null);
@@ -103,10 +103,10 @@ export default function IdleView({ onProceed, onGoToQuiz, onGoToRedes }) {
                             Empezar
                         </button>
                         <button
-                            onClick={onGoToQuiz}
+                            onClick={onGoToGame}
                             className="w-full sm:w-auto px-6 py-4 rounded-full font-geomanist font-bold text-lg uppercase tracking-widest bg-white text-azul-gatuno ring-4 ring-inset ring-azul-gatuno shadow-md hover:bg-azul-gatuno hover:text-white transition-all duration-300 flex items-center justify-center whitespace-nowrap"
                         >
-                            Ir al Quiz
+                            Bug Hunt
                         </button>
                         <button
                             onClick={onGoToRedes}
