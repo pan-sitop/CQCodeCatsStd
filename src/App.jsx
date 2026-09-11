@@ -24,7 +24,7 @@ function App() {
             />
           )}
           {viewState === 'presentation' && (
-            <PresentationView key="presentation" onFinish={() => setViewState('quiz')} />
+            <PresentationView key="presentation" onFinish={() => setViewState('bughunt')} />
           )}
           {viewState === 'quiz' && (
             <QuizView key="quiz" onReturnToStart={() => setViewState('idle')} />

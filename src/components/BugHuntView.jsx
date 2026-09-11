@@ -249,12 +249,9 @@ export default function BugHuntView({ onReturnToStart }) {
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.5 }}
     >
-      {/* ── 16:9 Game Container ─────────────────────────────────────────── */}
-      <div className="relative w-full max-w-6xl" style={{ maxHeight: '92vh' }}>
-        <div
-          className="relative w-full overflow-hidden rounded-3xl bg-azul-gatuno shadow-[0_0_80px_rgba(65,66,245,0.45)] border-4 border-verde-limon"
-          style={{ paddingBottom: '56.25%' }}
-        >
+      {/* ── Responsive Game Container ─────────────────────────────────────────── */}
+      <div className="relative w-full max-w-6xl aspect-[4/5] sm:aspect-video max-h-[92vh]">
+        <div className="absolute inset-0 w-full h-full overflow-hidden rounded-3xl bg-azul-gatuno shadow-[0_0_80px_rgba(65,66,245,0.45)] border-4 border-verde-limon">
           <div className="absolute inset-0 flex flex-col">
 
             {/* Starfield */}
@@ -412,6 +409,7 @@ export default function BugHuntView({ onReturnToStart }) {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                   onClick={handleMiss}
+                  onTouchStart={handleMiss}
                 >
                   {/* HUD */}
                   <div className="absolute top-2 sm:top-3 left-3 sm:left-4 right-3 sm:right-4 flex items-center justify-between z-20 pointer-events-none">
@@ -446,13 +444,16 @@ export default function BugHuntView({ onReturnToStart }) {
                           animate={{ scale: 1, rotate: 0 }}
                           transition={{ type: 'spring', stiffness: 300, damping: 15 }}
                           onClick={(e) => handleBugClick(e, bug.id)}
+                          onTouchStart={(e) => handleBugClick(e, bug.id)}
                         >
-                          <span
+                          <motion.span
                             className="text-4xl sm:text-5xl md:text-6xl select-none pointer-events-none"
                             style={{ filter: 'drop-shadow(0 0 8px rgba(195,251,52,0.65))' }}
+                            animate={{ scale: [1, 0.45, 1] }}
+                            transition={{ repeat: Infinity, duration: randomBetween(0.7, 1.2), ease: "easeInOut" }}
                           >
                             {bug.emoji}
-                          </span>
+                          </motion.span>
                         </motion.div>
                       ) : (
                         /* ── Dead bug: falls & fades, no interaction ── */
